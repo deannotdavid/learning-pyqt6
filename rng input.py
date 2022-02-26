@@ -7,11 +7,11 @@ class MainWindow(QMainWindow):
     def __init__(self):
         super().__init__()
 
-        self.setWindowTitle("Dice app")
-        self.setFixedSize(QSize(210, 300))
+        self.setWindowTitle("Random Number App") # sets app title
+        self.setFixedSize(QSize(300, 350)) # sets a fixed size for the application window
 
         self.num_label_start = "Number generated: "
-        self.number_label = QLabel()
+        self.number_label = QLabel() # label to display the randomly generated number
 
         self.button = QPushButton("Generate a number!")
         self.button.clicked.connect(self.generate_number)
@@ -39,6 +39,7 @@ class MainWindow(QMainWindow):
         self.reset_button = QPushButton("Reset values")
         self.reset_button.clicked.connect(self.reset_values)
 
+        # puts the items to be added to the screen in a list
         objects = [
             self.number_label,
             self.button,
@@ -54,22 +55,24 @@ class MainWindow(QMainWindow):
         ]
 
         layout = QVBoxLayout()
+
+        # loops through objects and adds them to layout
         for item in objects:
             layout.addWidget(item)
         
         container = QWidget()
         container.setLayout(layout)
 
-        self.setCentralWidget(container)
+        self.setCentralWidget(container) # sets central widget to the container
 
     def generate_number(self):
-        self.number = random.randint(self.min, self.max)
-        self.number_label.setText(f"{self.num_label_start}{self.number:,d}")
+        self.number = random.randint(self.min, self.max) # generate a random integer from self.min to self.max
+        self.number_label.setText(f"{self.num_label_start}{self.number:,d}") # set label to the randomly generated number
 
     def set_minimum(self, num):
         self.min = int(num)
-        self.min_label.setText(f"{self.min_start}{self.min:,d}")
-        self.min_input.clear()
+        self.min_label.setText(f"{self.min_start}{self.min:,d}") # changes label text
+        self.min_input.clear() # clears input box
         self.verify_min_max_values()
     
     def set_maximum(self, num):
@@ -79,6 +82,11 @@ class MainWindow(QMainWindow):
         self.verify_min_max_values()
 
     def verify_min_max_values(self):
+        """
+        Ensures that the minimum value is smaller than the maximum value.
+        This is so that random.randint does not raise an error.
+        If the minimum value is larger than the maximum value, the generate number button is disabled.
+        """
         if self.min < self.max:
             self.button.setText("Generate a number!")
             self.button.setEnabled(True)
@@ -87,6 +95,11 @@ class MainWindow(QMainWindow):
         self.button.setEnabled(False)
 
     def valid_input(self, text, button):
+        """
+        Ensures that a text passed in is an integer.
+        If the text is an integer, the button will be enabled.
+        if the text is not an integer, the button will be disabled.
+        """
         try:
             int(text)
             button.setEnabled(True)
@@ -96,8 +109,8 @@ class MainWindow(QMainWindow):
     def reset_values(self):
         self.set_minimum(self.default_min)
         self.set_maximum(self.default_max)
+        self.number_label.setText("")
         
-
 
 app = QApplication([])
 window = MainWindow()
