@@ -82,9 +82,13 @@ class MainWindow(QMainWindow):
         self.clip_combo.addItems(self.clip_memory)
     
     def dequeue(self):
+        # get and store the last item in memory
         tmp = self.clip_memory[-1]
+        # delete the last item in memory
         del self.clip_memory[-1]
+        # clear the combo table
         self.clip_combo.clear()
+        # replace with the clip memory
         self.clip_combo.addItems(self.clip_memory)
         return tmp
 
